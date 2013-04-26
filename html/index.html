@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Inline wheel thread</title>
+	<script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
+	<script type="text/javascript" src="../js/svg.js"></script>
+	<script type="text/javascript" src="../js/slalom.js"></script>
+	<script type="text/javascript" src="../js/slalom-field.js"></script>
+
+	<!--<script type="text/javascript">-->
+		<!--$(function(){-->
+			<!--var svg = $("#svg");-->
+			<!--var rectDOM = document.createElementNS("http://www.w3.org/2000/svg", "rect");-->
+			<!--var useDOM = document.createElementNS("http://www.w3.org/2000/svg", "use");-->
+
+			<!--var defRect = $(rectDOM).attr({-->
+				<!--"id": "defRect",-->
+				<!--width: 100,-->
+				<!--height: 100,-->
+				<!--fill: "skyblue"-->
+			<!--});-->
+			<!--svg.append('<defs id="defs" />');-->
+			<!--var defs = $('#defs');-->
+			<!--defs.append(defRect);-->
+
+			<!--var useRect = useDOM.href.baseVal = "#defRect";-->
+			<!--var useRect = $(useRect);-->
+			<!--for (var i=0; i<5; ++i) {-->
+				<!--svg.append(-->
+					<!--useRect.clone().attr({-->
+						<!--x: i*100,-->
+						<!--y: 0,-->
+						<!--width: 100,-->
+						<!--height: 100,-->
+						<!--fill: 'skyblue'-->
+					<!--})-->
+				<!--);-->
+			<!--}-->
+		<!--});-->
+	<!--</script>-->
+</head>
+
+<body>
+	<svg id="lane1"></svg>
+	<svg id="lane2"></svg>
+</body>
+
+</html>
