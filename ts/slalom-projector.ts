@@ -130,15 +130,16 @@ module ILS {
 					});
 				};
 
+				var gear = new ILS.View.GearFactory();
 				for (var i in ghosts) {
 					var ghost = ghosts[i];
-					var blades = ghost.blades;
 
-					var left = blade(blades.left, "indianred");
-					var right = blade(blades.right, "lightblue");
+//					var left = blade(blades.left, "indianred");
+//					var right = blade(blades.right, "lightblue");
+					var bladesElem = gear.blades(ghost.blades);
 
-					this.svg.append(left.asElement());
-					this.svg.append(right.asElement());
+					this.svg.append(bladesElem.left);
+					this.svg.append(bladesElem.right);
 				}
 			}
 
@@ -146,9 +147,47 @@ module ILS {
 
 		export class GearFactory {
 
-			blades(): JQuery {
-				return null;
+			blades(blades: { left: ILS.Blade; right: ILS.Blade; }): { left: JQuery; right: JQuery; } {
+				var makeBladeElement = (b: ILS.Blade, color: string) => {
+					var deg = (() => {
+						if (!deg) {
+							return null;
+						}
+						var d = Number(b.deg);
+						return "rotate(" + d + ", " + b.x + ", " + b.y + ")";
+					});
 
+					// グループ
+					var g = SVG.MakeElement("g", {
+						transform: deg(b.deg)
+					});
+
+					// ブレード
+					var blade = SVG.MakeElement("ellipse", {
+						rx: 5,
+						ry: 10,
+						cx: b.x,
+						cy: b.y,
+						fill: color
+					});
+
+					// 踵側
+					var hole = SVG.MakeElement("circle", {
+						r: 4,
+						cx: b.x,
+						cy: b.y + 4,
+						fill: "black"
+					})
+
+					// 構造化
+					g.append(blade);
+					g.append(hole);
+					return g;
+				};
+				var left = makeBladeElement(blades.left, "indianred");
+				var right = makeBladeElement(blades.right, "lightblue");
+
+				return { left: left, right: right };
 			}
 
 		}

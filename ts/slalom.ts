@@ -91,9 +91,9 @@ module ILS {
 				var ghost = this.ghosts[i];
 				var p = this.pylons[ghost.pos];
 				ghost.blades.left.x = p.x + ghost.blades.left.x;
-				ghost.blades.left.y = p.y + ghost.blades.left.y;
+				ghost.blades.left.y = p.y - ghost.blades.left.y;
 				ghost.blades.right.x = p.x + ghost.blades.right.x;
-				ghost.blades.right.y = p.y + ghost.blades.right.y;
+				ghost.blades.right.y = p.y - ghost.blades.right.y;
 			}
 		}
 	}

@@ -119,13 +119,12 @@ var ILS;
                         ]
                     });
                 };
+                var gear = new ILS.View.GearFactory();
                 for(var i in ghosts) {
                     var ghost = ghosts[i];
-                    var blades = ghost.blades;
-                    var left = blade(blades.left, "indianred");
-                    var right = blade(blades.right, "lightblue");
-                    this.svg.append(left.asElement());
-                    this.svg.append(right.asElement());
+                    var bladesElem = gear.blades(ghost.blades);
+                    this.svg.append(bladesElem.left);
+                    this.svg.append(bladesElem.right);
                 }
             };
             return Projector;
@@ -133,8 +132,41 @@ var ILS;
         View.Projector = Projector;        
         var GearFactory = (function () {
             function GearFactory() { }
-            GearFactory.prototype.blades = function () {
-                return null;
+            GearFactory.prototype.blades = function (blades) {
+                var makeBladeElement = function (b, color) {
+                    var deg = (function () {
+                        if(!deg) {
+                            return null;
+                        }
+                        var d = Number(b.deg);
+                        return "rotate(" + d + ", " + b.x + ", " + b.y + ")";
+                    });
+                    var g = SVG.MakeElement("g", {
+                        transform: deg(b.deg)
+                    });
+                    var blade = SVG.MakeElement("ellipse", {
+                        rx: 5,
+                        ry: 10,
+                        cx: b.x,
+                        cy: b.y,
+                        fill: color
+                    });
+                    var hole = SVG.MakeElement("circle", {
+                        r: 4,
+                        cx: b.x,
+                        cy: b.y + 4,
+                        fill: "black"
+                    });
+                    g.append(blade);
+                    g.append(hole);
+                    return g;
+                };
+                var left = makeBladeElement(blades.left, "indianred");
+                var right = makeBladeElement(blades.right, "lightblue");
+                return {
+                    left: left,
+                    right: right
+                };
             };
             return GearFactory;
         })();

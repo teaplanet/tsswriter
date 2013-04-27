@@ -4,7 +4,16 @@ class SVG {
 
 	static SVG_NS = "http://www.w3.org/2000/svg";
 
-	static MakeElement(type: string, values: { name: string; value: any; }[]): JQuery {
+	static MakeElement(type: string, attr?: {}): JQuery {
+		var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, type));
+		for (var name in attr) {
+			var value = attr[name];
+			if (value) svg.attr(name ,value);
+		}
+		return svg;
+	}
+
+	static MakeElementOld(type: string, values: { name: string; value: any; }[]): JQuery {
 		var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, type));
 		for (var i in values) {
 			var value = values[i];
@@ -112,7 +121,7 @@ module Figure {
 		}
 
 		asElement(): JQuery {
-			return SVG.MakeElement(this.type, [
+			return SVG.MakeElementOld(this.type, [
 				{ name: "width", value: this.width },
 				{ name: "height", value: this.height },
 				{ name: "fill", value: this.fill },
@@ -135,7 +144,7 @@ module Figure {
 		}
 
 		asElement(): JQuery {
-			return SVG.MakeElement(this.type, [
+			return SVG.MakeElementOld(this.type, [
 				{ name: "r", value: this.r },
 				{ name: "cx", value: this.x },
 				{ name: "cy", value: this.y },
@@ -158,7 +167,7 @@ module Figure {
 		}
 
 		asElement(): JQuery {
-			return SVG.MakeElement(this.type, [
+			return SVG.MakeElementOld(this.type, [
 				{ name: "rx", value: this.rx },
 				{ name: "ry", value: this.ry },
 				{ name: "cx", value: this.x },
@@ -183,7 +192,7 @@ module Figure {
 		}
 
 		asElement(): JQuery {
-			var text = SVG.MakeElement(this.type, [
+			var text = SVG.MakeElementOld(this.type, [
 				{ name: "x", value: this.x },
 				{ name: "y", value: this.y },
 				{ name: "font-size", value: this.fontSize },

@@ -6,7 +6,17 @@ var __extends = this.__extends || function (d, b) {
 var SVG = (function () {
     function SVG() { }
     SVG.SVG_NS = "http://www.w3.org/2000/svg";
-    SVG.MakeElement = function MakeElement(type, values) {
+    SVG.MakeElement = function MakeElement(type, attr) {
+        var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, type));
+        for(var name in attr) {
+            var value = attr[name];
+            if(value) {
+                svg.attr(name, value);
+            }
+        }
+        return svg;
+    };
+    SVG.MakeElementOld = function MakeElementOld(type, values) {
         var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, type));
         for(var i in values) {
             var value = values[i];
@@ -68,7 +78,7 @@ var Figure;
             this.type = "rect";
         }
         Rect.prototype.asElement = function () {
-            return SVG.MakeElement(this.type, [
+            return SVG.MakeElementOld(this.type, [
                 {
                     name: "width",
                     value: this.width
@@ -110,7 +120,7 @@ var Figure;
             this.type = "circle";
         }
         Circle.prototype.asElement = function () {
-            return SVG.MakeElement(this.type, [
+            return SVG.MakeElementOld(this.type, [
                 {
                     name: "r",
                     value: this.r
@@ -149,7 +159,7 @@ var Figure;
             this.type = "ellipse";
         }
         Ellipse.prototype.asElement = function () {
-            return SVG.MakeElement(this.type, [
+            return SVG.MakeElementOld(this.type, [
                 {
                     name: "rx",
                     value: this.rx
@@ -193,7 +203,7 @@ var Figure;
             this.type = "text";
         }
         Text.prototype.asElement = function () {
-            var text = SVG.MakeElement(this.type, [
+            var text = SVG.MakeElementOld(this.type, [
                 {
                     name: "x",
                     value: this.x
