@@ -23,14 +23,17 @@ module ILS {
 			// パイロンを数える
 			this.pylons = this.countPylons(this.ghosts);
 
-			// レーンを引く
-			this.drawLane();
+			if (this.pylons.length) {
+				// レーンを引く
+				this.drawLane();
 
-			// パイロンを配置
-			this.spaceOut(this.pylons);
+				// パイロンを配置
+				this.spaceOut(this.pylons);
 
-			// 残像を投影する
-			this.reflect();
+				// 残像を投影する
+				this.reflect();
+			}
+
 		}
 
 		/**
@@ -119,13 +122,17 @@ module ILS {
 	/**
 	 * 残像
 	 */
-	export interface Ghost {
-		pos: number;		// パイロン番号
-		blades: {
-			left: Blade;	// 左足
-			right: Blade;	// 右足
-		};
+	export class Ghost {
 
+		/**
+		 * コンストラクタ
+		 * @param pos パイロン番号
+		 * @param blades ブレード(1足)
+		 */
+		constructor(
+			public pos: number,
+			public blades: { left: Blade; right: Blade; }) {
+		}
 	}
 
 	export interface Blade {

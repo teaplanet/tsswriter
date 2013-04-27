@@ -7,9 +7,11 @@ var ILS;
             this.width = width;
             this.ghosts = ghosts;
             this.pylons = this.countPylons(this.ghosts);
-            this.drawLane();
-            this.spaceOut(this.pylons);
-            this.reflect();
+            if(this.pylons.length) {
+                this.drawLane();
+                this.spaceOut(this.pylons);
+                this.reflect();
+            }
         }
         Slalom.prototype.drawLane = function () {
             var length = this.distance * (this.pylons.length - 1);
@@ -86,6 +88,14 @@ var ILS;
         return Slalom;
     })();
     ILS.Slalom = Slalom;    
+    var Ghost = (function () {
+        function Ghost(pos, blades) {
+            this.pos = pos;
+            this.blades = blades;
+        }
+        return Ghost;
+    })();
+    ILS.Ghost = Ghost;    
     var Lane = (function () {
         function Lane(width, length, start) {
             this.width = width;

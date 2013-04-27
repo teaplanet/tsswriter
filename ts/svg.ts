@@ -2,6 +2,23 @@
 
 class SVG {
 
+	static SVG_NS = "http://www.w3.org/2000/svg";
+
+	static MakeElement(type: string, values: { name: string; value: any; }[]): JQuery {
+		var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, type));
+		for (var i in values) {
+			var value = values[i];
+			var name = value.name;
+			var value = value.value;
+			if (value) svg.attr(name ,value);
+		}
+		return svg;
+	}
+
+	static svg() {
+		return $(document.createElementNS(SVG_NS, "svg"));
+	}
+
 	static rect(attr: {
 				width: number;
 				height: number;
@@ -58,17 +75,6 @@ module Figure {
 			throw new Error("must be override.");
 		}
 
-		makeElement(values: { name: string; value: any; }[]): JQuery {
-			var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, this.type));
-			for (var i in values) {
-				var value = values[i];
-				var name = value.name;
-				var value = value.value;
-				if (value) svg.attr(name ,value);
-			}
-			return svg;
-		}
-
 		makeRotateAttrAsString(deg: number[]) {
 			if (deg && deg[0]) {
 				var d = deg[0];
@@ -94,7 +100,7 @@ module Figure {
 		}
 
 		asElement(): JQuery {
-			return super.makeElement([
+			return SVG.MakeElement(this.type, [
 				{ name: "width", value: this.width },
 				{ name: "height", value: this.height },
 				{ name: "fill", value: this.fill },
@@ -117,7 +123,7 @@ module Figure {
 		}
 
 		asElement(): JQuery {
-			return super.makeElement([
+			return SVG.MakeElement(this.type, [
 				{ name: "r", value: this.r },
 				{ name: "cx", value: this.x },
 				{ name: "cy", value: this.y },
@@ -140,7 +146,7 @@ module Figure {
 		}
 
 		asElement(): JQuery {
-			return super.makeElement([
+			return SVG.MakeElement(this.type, [
 				{ name: "rx", value: this.rx },
 				{ name: "ry", value: this.ry },
 				{ name: "cx", value: this.x },

@@ -1,58 +1,64 @@
 $(function () {
-    var distance = 150;
-    var width = 200;
-    var start = "bottom";
-    var ghosts = [
-        {
-            pos: 1,
-            blades: {
-                left: {
-                    x: -20,
-                    y: 0,
-                    deg: -30
-                },
-                right: {
-                    x: 20,
-                    y: 0,
-                    deg: 30
-                }
-            }
-        }, 
-        {
-            pos: 2,
-            blades: {
-                left: {
-                    x: -40,
-                    y: 0
-                },
-                right: {
-                    x: 40,
-                    y: 0
-                }
-            }
-        }, 
-        {
-            pos: 4,
-            blades: {
-                left: {
-                    x: 20,
-                    y: 0
-                },
-                right: {
-                    x: -20,
-                    y: 0
-                }
-            }
-        }
-    ];
-    var slalom = new ILS.Slalom(start, distance, width, ghosts);
-    var projector = new Projector($("#lane1"), slalom);
-    projector.reflect();
+    var area = $(".ils-slalom");
+    area.each(function () {
+        var recorder = new Recorder($(this));
+        var start = "bottom";
+        var distance = 150;
+        var width = 200;
+        var ghosts = recorder.ghosts;
+        var slalom = new ILS.Slalom(start, distance, width, ghosts);
+        var projector = new Projector(area, slalom);
+        projector.reflect();
+    });
 });
+var Recorder = (function () {
+    function Recorder(area) {
+        this.ghosts = this.cut(area);
+    }
+    Recorder.prototype.cut = function (area) {
+        var ghosts = [];
+        var pylons = area.find("p[data-pos]");
+        var mineBlades = function (p) {
+            var bladeInfo = function (blade) {
+                var info = blade.split(",");
+                return {
+                    x: Number(info[0]),
+                    y: Number(info[1]),
+                    deg: Number(info[2] || 0)
+                };
+            };
+            var left = bladeInfo(p.data("bladeLeft"));
+            var right = bladeInfo(p.data("bladeRight"));
+            return {
+                left: {
+                    x: left.x,
+                    y: left.y,
+                    deg: left.deg || 0
+                },
+                right: {
+                    x: right.x,
+                    y: right.y,
+                    deg: right.deg || 0
+                }
+            };
+        };
+        pylons.each(function () {
+            var pylon = $(this);
+            var pos = pylon.data("pos");
+            var blades = mineBlades(pylon);
+            var ghost = new ILS.Ghost(pos, blades);
+            ghosts.push(ghost);
+        });
+        return ghosts;
+    };
+    return Recorder;
+})();
 var Projector = (function () {
     function Projector(area, slalom) {
         this.area = area;
         this.slalom = slalom;
+        this.svg = SVG.svg();
+        this.area.prepend(this.svg);
     }
     Projector.prototype.reflect = function () {
         this.reflectLane(this.slalom.lane);
@@ -67,7 +73,7 @@ var Projector = (function () {
             rx: 0,
             ry: 0
         });
-        this.area.append(rect.asElement());
+        this.svg.append(rect.asElement());
     };
     Projector.prototype.reflectPylon = function (pylons) {
         for(var i in pylons) {
@@ -78,7 +84,7 @@ var Projector = (function () {
                 cy: pylon.y,
                 fill: "maroon"
             });
-            this.area.append(circle.asElement());
+            this.svg.append(circle.asElement());
         }
     };
     Projector.prototype.reflectGhost = function (ghosts) {
@@ -101,10 +107,10 @@ var Projector = (function () {
         for(var i in ghosts) {
             var ghost = ghosts[i];
             var blades = ghost.blades;
-            var left = blade(blades.left, "lightblue");
-            var right = blade(blades.right, "indianred");
-            this.area.append(left.asElement());
-            this.area.append(right.asElement());
+            var left = blade(blades.left, "indianred");
+            var right = blade(blades.right, "lightblue");
+            this.svg.append(left.asElement());
+            this.svg.append(right.asElement());
         }
     };
     return Projector;

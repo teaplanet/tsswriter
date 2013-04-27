@@ -3,23 +3,71 @@
 /// <reference path="slalom.ts" />
 
 $(() => {
-	var distance = 150;
-	var width = 200;
-	var start = "bottom";
-	var ghosts = [
-		{ pos: 1, blades: { left: { x: -20, y: 0, deg: -30 }, right: { x:  20, y: 0, deg: 30 }}},
-		{ pos: 2, blades: { left: { x: -40, y: 0 }, right: { x:  40, y: 0 }}},
-		{ pos: 4, blades: { left: { x:  20, y: 0 }, right: { x: -20, y: 0 }}}
-	];
+	var area = $(".ils-slalom");
+	area.each(function() {
+		var recorder = new Recorder($(this));
+		var start = "bottom";
+		var distance = 150;
+		var width = 200;
+		var ghosts = recorder.ghosts;
 
-	var slalom = new ILS.Slalom(start, distance, width, ghosts);
-	var projector = new Projector($("#lane1"), slalom);
-	projector.reflect();
+		var slalom = new ILS.Slalom(start, distance, width, ghosts);
+		var projector = new Projector(area, slalom);
+		projector.reflect();
+	});
+
 });
+
+class Recorder {
+
+	ghosts: ILS.Ghost[];
+
+	constructor(area: JQuery) {
+		this.ghosts = this.cut(area);
+	}
+
+	private cut(area: JQuery): ILS.Ghost[] {
+		var ghosts: ILS.Ghost[] = [];
+		var pylons = area.find("p[data-pos]");
+
+		var mineBlades = (p: JQuery): { left: ILS.Blade; right: ILS.Blade; } => {
+			var bladeInfo = (blade: string) => {
+				var info = blade.split(",");
+				return {
+					x: Number(info[0]),
+					y: Number(info[1]),
+					deg: Number(info[2] || 0)
+				}
+
+			};
+			var left = bladeInfo(p.data("bladeLeft"));
+			var right = bladeInfo(p.data("bladeRight"));
+			return {
+				left: { x: left.x, y: left.y, deg: left.deg || 0 },
+				right: { x: right.x, y: right.y, deg: right.deg || 0 }
+			}
+		};
+
+		pylons.each(function() {
+			var pylon = $(this);
+			var pos = pylon.data("pos");
+			var blades = mineBlades(pylon);
+
+			var ghost = new ILS.Ghost(pos, blades);
+			ghosts.push(ghost);
+		});
+		return ghosts;
+	}
+
+}
 
 class Projector {
 
+	private svg: JQuery;
+
 	constructor(private area: JQuery, private slalom: ILS.Slalom) {
+		this.svg = SVG.svg();
+		this.area.prepend(this.svg);
 	}
 
 	public reflect() {
@@ -36,7 +84,7 @@ class Projector {
 			rx: 0,
 			ry: 0
 		});
-		this.area.append(rect.asElement());
+		this.svg.append(rect.asElement());
 	}
 
 	private reflectPylon(pylons: ILS.Pylon[]) {
@@ -48,7 +96,7 @@ class Projector {
 				cy: pylon.y,
 				fill: "maroon"
 			});
-			this.area.append(circle.asElement());
+			this.svg.append(circle.asElement());
 		}
 	}
 
@@ -70,11 +118,11 @@ class Projector {
 			var ghost = ghosts[i];
 			var blades = ghost.blades;
 
-			var left = blade(blades.left, "lightblue");
-			var right = blade(blades.right, "indianred");
+			var left = blade(blades.left, "indianred");
+			var right = blade(blades.right, "lightblue");
 
-			this.area.append(left.asElement());
-			this.area.append(right.asElement());
+			this.svg.append(left.asElement());
+			this.svg.append(right.asElement());
 		}
 	}
 

@@ -5,6 +5,22 @@ var __extends = this.__extends || function (d, b) {
 };
 var SVG = (function () {
     function SVG() { }
+    SVG.SVG_NS = "http://www.w3.org/2000/svg";
+    SVG.MakeElement = function MakeElement(type, values) {
+        var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, type));
+        for(var i in values) {
+            var value = values[i];
+            var name = value.name;
+            var value = value.value;
+            if(value) {
+                svg.attr(name, value);
+            }
+        }
+        return svg;
+    };
+    SVG.svg = function svg() {
+        return $(document.createElementNS(SVG.SVG_NS, "svg"));
+    };
     SVG.rect = function rect(attr) {
         return new Figure.Rect(attr.width, attr.height, attr.fill, attr.rx, attr.rx, attr.deg);
     };
@@ -23,18 +39,6 @@ var Figure;
         Elementable.SVG_NS = "http://www.w3.org/2000/svg";
         Elementable.prototype.asElement = function () {
             throw new Error("must be override.");
-        };
-        Elementable.prototype.makeElement = function (values) {
-            var svg = $(document.createElementNS(Figure.Elementable.SVG_NS, this.type));
-            for(var i in values) {
-                var value = values[i];
-                var name = value.name;
-                var value = value.value;
-                if(value) {
-                    svg.attr(name, value);
-                }
-            }
-            return svg;
         };
         Elementable.prototype.makeRotateAttrAsString = function (deg) {
             if(deg && deg[0]) {
@@ -61,7 +65,7 @@ var Figure;
             this.type = "rect";
         }
         Rect.prototype.asElement = function () {
-            return _super.prototype.makeElement.call(this, [
+            return SVG.MakeElement(this.type, [
                 {
                     name: "width",
                     value: this.width
@@ -103,7 +107,7 @@ var Figure;
             this.type = "circle";
         }
         Circle.prototype.asElement = function () {
-            return _super.prototype.makeElement.call(this, [
+            return SVG.MakeElement(this.type, [
                 {
                     name: "r",
                     value: this.r
@@ -142,7 +146,7 @@ var Figure;
             this.type = "ellipse";
         }
         Ellipse.prototype.asElement = function () {
-            return _super.prototype.makeElement.call(this, [
+            return SVG.MakeElement(this.type, [
                 {
                     name: "rx",
                     value: this.rx
