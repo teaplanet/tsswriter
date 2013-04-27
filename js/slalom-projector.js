@@ -6,7 +6,7 @@ $(function () {
         var distance = 150;
         var width = 200;
         var ghosts = recorder.ghosts;
-        var slalom = new ILS.Slalom(start, distance, width, ghosts);
+        var slalom = new ILS.Slalom(distance, width, ghosts);
         var projector = new Projector(area, slalom);
         projector.reflect();
     });

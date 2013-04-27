@@ -8,14 +8,12 @@ module ILS {
 		pylons: Pylon[];
 
 		/**
-		 *
-		 * @param start 開始位置("top", "left", "bottom", "right")
+		 * コンストラクタ
 		 * @param distance パイロンの間隔
 		 * @param width スラロームに必要なレーンの幅
 		 * @param ghosts スラロームの残像
 		 */
 		constructor(
-				private start: string,
 				private distance: number,
 				private width: number,
 				public ghosts: Ghost[]) {
@@ -41,12 +39,7 @@ module ILS {
 		 */
 		private drawLane() {
 			var length = this.distance * (this.pylons.length - 1);
-			switch (this.start) {
-				case "left":
-				case "right":
-					this.width = [ length, length = this.width][0];
-			}
-			this.lane = new Lane(this.width, length, this.start);
+			this.lane = new Lane(this.width, length);
 		}
 
 		/**
@@ -84,29 +77,15 @@ module ILS {
 				var x = this.width / 2;
 				var y = this.distance * (pylon.pos - 1) + (this.distance / 2);
 
-				switch (this.start) {
-					case "top":
-						// do nothing.
-						break;
+				// 開始位置をbottomに変更。
+				y = this.lane.length - y;
 
-					case "bottom":
-						y = this.lane.length - y;
-						break;
-
-					case "left":
-						x = [y, y = x][0];
-						break;
-
-					case "right":
-						x = [y, y = x][0];
-						x = this.lane.length - x;
-						break;
-				}
 				pylons[i].x = x;
 				pylons[i].y = y;
 			}
 		}
 
+		// 残像の座標を決定する
 		private reflect(): void {
 			for (var i in this.ghosts) {
 				var ghost = this.ghosts[i];
@@ -153,12 +132,10 @@ module ILS {
 		 * レーン
 		 * @param width 幅
 		 * @param length 長さ
-		 * @param start 開始位置
 		 */
 		constructor(
 				public width: number,
-				public length: number,
-				public start: string) {
+				public length: number) {
 		}
 
 	}
