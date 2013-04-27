@@ -2,19 +2,19 @@ $(function () {
     var area = $(".ils-slalom");
     area.each(function () {
         var field = $(this);
-        var recorder = new ILS.HTML.Recorder(field);
+        var recorder = new ILS.View.Recorder(field);
         var interval = Number(field.attr("data-interval")) || 150;
         var width = Number(field.attr("data-lane-width")) || 200;
         var ghosts = recorder.ghosts;
         field.find("p[data-pos]").attr("style", "display: none");
         var slalom = new ILS.Slalom(interval, width, ghosts);
-        var projector = new ILS.HTML.Projector(field, slalom);
+        var projector = new ILS.View.Projector(field, slalom);
         projector.reflect();
     });
 });
 var ILS;
 (function (ILS) {
-    (function (HTML) {
+    (function (View) {
         var Recorder = (function () {
             function Recorder(field) {
                 this.ghosts = this.cut(field);
@@ -57,7 +57,7 @@ var ILS;
             };
             return Recorder;
         })();
-        HTML.Recorder = Recorder;        
+        View.Recorder = Recorder;        
         var Projector = (function () {
             function Projector(field, slalom) {
                 this.field = field;
@@ -120,7 +120,7 @@ var ILS;
             };
             return Projector;
         })();
-        HTML.Projector = Projector;        
+        View.Projector = Projector;        
         var GearFactory = (function () {
             function GearFactory() { }
             GearFactory.prototype.blades = function () {
@@ -128,8 +128,8 @@ var ILS;
             };
             return GearFactory;
         })();
-        HTML.GearFactory = GearFactory;        
-    })(ILS.HTML || (ILS.HTML = {}));
-    var HTML = ILS.HTML;
+        View.GearFactory = GearFactory;        
+    })(ILS.View || (ILS.View = {}));
+    var View = ILS.View;
 })(ILS || (ILS = {}));
 //@ sourceMappingURL=slalom-projector.js.map

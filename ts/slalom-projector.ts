@@ -6,14 +6,14 @@ $(() => {
 	var area = $(".ils-slalom");
 	area.each(function(){
 		var field = $(this);
-		var recorder = new ILS.HTML.Recorder(field);
+		var recorder = new ILS.View.Recorder(field);
 		var interval = Number(field.attr("data-interval")) || 150;
 		var width = Number(field.attr("data-lane-width")) || 200;
 		var ghosts = recorder.ghosts;
 
 		field.find("p[data-pos]").attr("style", "display: none");
 		var slalom = new ILS.Slalom(interval, width, ghosts);
-		var projector = new ILS.HTML.Projector(field, slalom);
+		var projector = new ILS.View.Projector(field, slalom);
 		projector.reflect();
 	});
 
@@ -21,7 +21,7 @@ $(() => {
 
 module ILS {
 
-	export module HTML {
+	export module View {
 
 		export class Recorder {
 
