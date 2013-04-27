@@ -9,12 +9,12 @@ module ILS {
 
 		/**
 		 * コンストラクタ
-		 * @param distance パイロンの間隔
+		 * @param interval パイロンの間隔
 		 * @param width スラロームに必要なレーンの幅
 		 * @param ghosts スラロームの残像
 		 */
 		constructor(
-				private distance: number,
+				private interval: number,
 				private width: number,
 				public ghosts: Ghost[]) {
 
@@ -38,7 +38,7 @@ module ILS {
 		 *
 		 */
 		private drawLane() {
-			var length = this.distance * (this.pylons.length - 1);
+			var length = this.interval * (this.pylons.length - 1);
 			this.lane = new Lane(this.width, length);
 		}
 
@@ -75,7 +75,7 @@ module ILS {
 				var pylon = pylons[i];
 
 				var x = this.width / 2;
-				var y = this.distance * (pylon.pos - 1) + (this.distance / 2);
+				var y = this.interval * (pylon.pos - 1) + (this.interval / 2);
 
 				// 開始位置をbottomに変更。
 				y = this.lane.length - y;

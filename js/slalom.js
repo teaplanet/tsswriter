@@ -1,8 +1,8 @@
 var ILS;
 (function (ILS) {
     var Slalom = (function () {
-        function Slalom(distance, width, ghosts) {
-            this.distance = distance;
+        function Slalom(interval, width, ghosts) {
+            this.interval = interval;
             this.width = width;
             this.ghosts = ghosts;
             this.pylons = this.countPylons(this.ghosts);
@@ -13,7 +13,7 @@ var ILS;
             }
         }
         Slalom.prototype.drawLane = function () {
-            var length = this.distance * (this.pylons.length - 1);
+            var length = this.interval * (this.pylons.length - 1);
             this.lane = new Lane(this.width, length);
         };
         Slalom.prototype.countPylons = function (ghosts) {
@@ -41,7 +41,7 @@ var ILS;
             for(var i in pylons) {
                 var pylon = pylons[i];
                 var x = this.width / 2;
-                var y = this.distance * (pylon.pos - 1) + (this.distance / 2);
+                var y = this.interval * (pylon.pos - 1) + (this.interval / 2);
                 y = this.lane.length - y;
                 pylons[i].x = x;
                 pylons[i].y = y;
