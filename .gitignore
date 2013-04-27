@@ -1,3 +1,6 @@
+*.swp
+out/
+
 # Intellij project files
 *.iml
 *.ipr
@@ -6,4 +9,10 @@
 
 # TypeScript
 *.map
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
 
