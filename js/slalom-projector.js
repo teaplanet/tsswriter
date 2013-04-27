@@ -67,6 +67,7 @@ var ILS;
             }
             Projector.prototype.reflect = function () {
                 this.reflectLane(this.slalom.lane);
+                this.reflectStart(this.slalom.lane);
                 this.reflectPylon(this.slalom.pylons);
                 this.reflectGhost(this.slalom.ghosts);
             };
@@ -79,6 +80,15 @@ var ILS;
                     ry: 0
                 });
                 this.svg.append(rect.asElement());
+            };
+            Projector.prototype.reflectStart = function (lane) {
+                var start = SVG.text({
+                    text: "START",
+                    x: lane.width / 2,
+                    y: lane.length + 15,
+                    anchor: "middle"
+                });
+                this.svg.append(start.asElement());
             };
             Projector.prototype.reflectPylon = function (pylons) {
                 for(var i in pylons) {

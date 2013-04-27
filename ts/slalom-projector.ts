@@ -77,6 +77,7 @@ module ILS {
 
 			public reflect() {
 				this.reflectLane(this.slalom.lane);
+				this.reflectStart(this.slalom.lane);
 				this.reflectPylon(this.slalom.pylons);
 				this.reflectGhost(this.slalom.ghosts);
 			}
@@ -90,6 +91,16 @@ module ILS {
 					ry: 0
 				});
 				this.svg.append(rect.asElement());
+			}
+
+			private reflectStart(lane: ILS.Lane) {
+				var start = SVG.text({
+					text: "START",
+					x: lane.width / 2,
+					y: lane.length + 15,
+					anchor: "middle"
+				});
+				this.svg.append(start.asElement());
 			}
 
 			private reflectPylon(pylons: ILS.Pylon[]) {

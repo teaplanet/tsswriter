@@ -51,6 +51,18 @@ class SVG {
 		return new Figure.Ellipse(attr.rx, attr.ry, attr.cx, attr.cy, attr.fill, attr.deg);
 	}
 
+	static text(attr: {
+				text?: string;
+				x: number;
+				y: number;
+				fontSize?: number;
+				fontFamily?: string;
+				anchor?: string;
+				deg?: number[];
+			}): Figure.Text {
+		return new Figure.Text(attr.text, attr.x, attr.y, attr.fontSize, attr.fontFamily, attr.anchor, attr.deg);
+	}
+
 }
 
 module Figure {
@@ -154,6 +166,33 @@ module Figure {
 				{ name: "fill", value: this.fill },
 				{ name: "transform", value: super.makeRotateAttrAsString(this.deg) }
 			]);
+		}
+	}
+
+	export class Text extends Figure.Elementable {
+		type = "text";
+
+		constructor(public text: string,
+					public x: number,
+					public y: number,
+					public fontSize?: number,
+					public fontFamily?: string,
+					public anchor?: string,
+					public deg?: number[]) {
+			super();
+		}
+
+		asElement(): JQuery {
+			var text = SVG.MakeElement(this.type, [
+				{ name: "x", value: this.x },
+				{ name: "y", value: this.y },
+				{ name: "font-size", value: this.fontSize },
+				{ name: "font-family", value: this.fontFamily },
+				{ name: "text-anchor", value: this.anchor },
+				{ name: "transform", value: super.makeRotateAttrAsString(this.deg) }
+			]);
+			text.text(this.text);
+			return text;
 		}
 	}
 

@@ -30,6 +30,9 @@ var SVG = (function () {
     SVG.ellipse = function ellipse(attr) {
         return new Figure.Ellipse(attr.rx, attr.ry, attr.cx, attr.cy, attr.fill, attr.deg);
     };
+    SVG.text = function text(attr) {
+        return new Figure.Text(attr.text, attr.x, attr.y, attr.fontSize, attr.fontFamily, attr.anchor, attr.deg);
+    };
     return SVG;
 })();
 var Figure;
@@ -176,6 +179,52 @@ var Figure;
         return Ellipse;
     })(Figure.Elementable);
     Figure.Ellipse = Ellipse;    
+    var Text = (function (_super) {
+        __extends(Text, _super);
+        function Text(text, x, y, fontSize, fontFamily, anchor, deg) {
+                _super.call(this);
+            this.text = text;
+            this.x = x;
+            this.y = y;
+            this.fontSize = fontSize;
+            this.fontFamily = fontFamily;
+            this.anchor = anchor;
+            this.deg = deg;
+            this.type = "text";
+        }
+        Text.prototype.asElement = function () {
+            var text = SVG.MakeElement(this.type, [
+                {
+                    name: "x",
+                    value: this.x
+                }, 
+                {
+                    name: "y",
+                    value: this.y
+                }, 
+                {
+                    name: "font-size",
+                    value: this.fontSize
+                }, 
+                {
+                    name: "font-family",
+                    value: this.fontFamily
+                }, 
+                {
+                    name: "text-anchor",
+                    value: this.anchor
+                }, 
+                {
+                    name: "transform",
+                    value: _super.prototype.makeRotateAttrAsString.call(this, this.deg)
+                }
+            ]);
+            text.text(this.text);
+            return text;
+        };
+        return Text;
+    })(Figure.Elementable);
+    Figure.Text = Text;    
     var Use = (function (_super) {
         __extends(Use, _super);
         function Use(baseVal) {
