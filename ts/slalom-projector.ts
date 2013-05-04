@@ -133,9 +133,6 @@ module ILS {
 				var gear = new ILS.View.GearFactory();
 				for (var i in ghosts) {
 					var ghost = ghosts[i];
-
-//					var left = blade(blades.left, "indianred");
-//					var right = blade(blades.right, "lightblue");
 					var bladesElem = gear.blades(ghost.blades);
 
 					this.svg.append(bladesElem.left);
