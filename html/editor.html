@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+	<meta charset="UTF-8" />
+	<title>Slalom Score Writer</title>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+
+	<script type="text/javascript" src="../ts/ScoreController.js"></script>
+	<script type="text/javascript" src="../ts/View.js"></script>
+</head>
+<body>
+
+<!-- フィールド -->
+<div ng-controller="Score.WriteController">
+	<svg width="{{slalom.field.width}}" height="{{slalom.field.height}}">
+		<rect width="{{lane.width}}" height="{{lane.height}}" style="fill: mintcream" ng-repeat="lane in slalom.lanes" />
+		<circle r="5" cx="{{pylon.x}}" cy="{{pylon.y}}" style="fill: red" ng-repeat="pylon in slalom.pylons"/>
+	</svg>
+
+	<!-- 設定 -->
+	<div id="config">
+		<div id="pylon-config">
+			<div>
+				<span>パイロン数</span>
+				<span><select ng-model="config.pylon.num" ng-options="num for num in config.pylon.nums" ng-init="config.pylon.num = 10"></select>個</span>
+			</div>
+			<div>
+				<span>間隔</span>
+				<span><select ng-model="config.pylon.interval" ng-options="interval for interval in config.pylon.intervals" ng-init="config.pylon.interval = 150"></select>cm</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- ドラッグ用ブレード -->
+	<div id="master-blades">
+		<div name="blade">
+			<span><img id="left-foot" ng-src="./resources/left_foot.png" alt="left foot"></span>
+			<span><img id="right-foot" ng-src="./resources/right_foot.png" alt="right foot"></span>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
