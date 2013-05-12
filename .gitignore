@@ -9,6 +9,7 @@ out/
 
 # TypeScript
 *.map
+*.d.key
 
 # Java
 *.class
