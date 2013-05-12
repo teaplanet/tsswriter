@@ -125,11 +125,8 @@ module Score {
 
 					// functions
 					stop: function(e, item){
-						console.log($(this));
 						var x = item.position.left;
 						var y = item.position.top;
-						console.log(x);
-						console.log(y);
 
 						scope.$apply(() => {
 							scope.slalom.footmarks.push({
@@ -139,7 +136,6 @@ module Score {
 								deg: [0, 0, 0]
 							});
 						});
-						console.log(scope.slalom);
 					}
 				});
 			}

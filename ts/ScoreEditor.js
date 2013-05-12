@@ -104,11 +104,8 @@ var Score;
                     ],
                     helper: "clone",
                     stop: function (e, item) {
-                        console.log($(this));
                         var x = item.position.left;
                         var y = item.position.top;
-                        console.log(x);
-                        console.log(y);
                         scope.$apply(function () {
                             scope.slalom.footmarks.push({
                                 foot: attr.footmark,
@@ -121,7 +118,6 @@ var Score;
                                 ]
                             });
                         });
-                        console.log(scope.slalom);
                     }
                 });
             }
