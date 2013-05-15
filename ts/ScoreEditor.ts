@@ -112,7 +112,7 @@ module Score {
 
 			updateLaneHeight($scope);
 		}])
-	.directive("footmark", function(){
+	.directive("masterFootmark", function(){
 		return {
 			restrict: "A",
 			link: function(scope, elem, attr) {
@@ -130,11 +130,42 @@ module Score {
 
 						scope.$apply(() => {
 							scope.slalom.footmarks.push({
-								foot: attr.footmark,
+								foot: attr.masterFootmark,
 								x: x,
 								y: y,
 								deg: [0, 0, 0]
 							});
+						});
+					}
+				});
+			}
+		};
+	})
+	.directive("footmark", function(){
+		return {
+			restrict: "A",
+			link: function(scope, elem, attr) {
+				$(elem).click(function(){
+					$(this).toggleClass("anglable");
+				});
+				$(elem).draggable({
+					// properties
+					cursor: "move",
+					scroll: true,
+					grid: [5, 5],
+
+					// functions
+					stop: function(e, item){
+						var x = item.position.left;
+						var y = item.position.top;
+
+						scope.$apply(() => {
+//								scope.slalom.footmarks.push({
+//									foot: attr.masterFootmark,
+//									x: x,
+//									y: y,
+//									deg: [0, 0, 0]
+//								});
 						});
 					}
 				});

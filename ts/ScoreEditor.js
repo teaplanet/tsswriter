@@ -91,7 +91,7 @@ var Score;
                 });
             }
             updateLaneHeight($scope);
-        }    ]).directive("footmark", function () {
+        }    ]).directive("masterFootmark", function () {
         return {
             restrict: "A",
             link: function (scope, elem, attr) {
@@ -108,7 +108,7 @@ var Score;
                         var y = item.position.top;
                         scope.$apply(function () {
                             scope.slalom.footmarks.push({
-                                foot: attr.footmark,
+                                foot: attr.masterFootmark,
                                 x: x,
                                 y: y,
                                 deg: [
@@ -117,6 +117,29 @@ var Score;
                                     0
                                 ]
                             });
+                        });
+                    }
+                });
+            }
+        };
+    }).directive("footmark", function () {
+        return {
+            restrict: "A",
+            link: function (scope, elem, attr) {
+                $(elem).click(function () {
+                    $(this).toggleClass("anglable");
+                });
+                $(elem).draggable({
+                    cursor: "move",
+                    scroll: true,
+                    grid: [
+                        5, 
+                        5
+                    ],
+                    stop: function (e, item) {
+                        var x = item.position.left;
+                        var y = item.position.top;
+                        scope.$apply(function () {
                         });
                     }
                 });

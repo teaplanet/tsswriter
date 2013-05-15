@@ -9,21 +9,25 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 
 	<script type="text/javascript" src="../ts/ScoreEditor.js"></script>
-	<script type="text/javascript" src="../ts/View.js"></script>
+
+	<style type="text/css">
+		.anglable {
+			background-color: red;
+		}
+	</style>
 </head>
 <body>
 
 <!-- フィールド -->
-<div ng-controller="EditorCtrl">
-	<svg width="{{slalom.field.width}}" height="{{slalom.field.height}}">
-		<rect width="{{lane.width}}" height="{{lane.height}}" style="fill: mintcream" ng-repeat="lane in slalom.lanes" />
-		<circle r="5" cx="{{pylon.x}}" cy="{{pylon.y}}" style="fill: red" ng-repeat="pylon in slalom.pylons"/>
-		<ellipse rx="6" ry="10" cx="{{mark.x}}" cy="{{mark.y}}" style="fill: blue" ng-repeat="mark in slalom.footmarks" />
-	</svg>
+<div ng-controller="EditorCtrl" style="width: {{slalom.field.width}}px; height: {{slalom.field.height}}px; background-color: mintcream;">
+	<div style="width: {{lane.width}}; height: {{lane.width}}" ng-repeat="lane in slalom.lanes">
+		<img ng-src="./resources/pylon.png" alt="pylon" style="position: absolute; left: {{pylon.x-24}}px; top: {{pylon.y}}px" ng-repeat="pylon in slalom.pylons">
+		<img ng-src="./resources/{{mark.foot}}_foot.png" alt="left foot" style="position: absolute; left: {{mark.x+slalom.lanes[0].width+20}}px; top: {{mark.y}}px;" footmark="{{mark.foot}}" ng-repeat="mark in slalom.footmarks">
+	</div>
 
 	<!-- 設定 -->
-	<div id="config">
-		<div id="pylon-config">
+	<div id="config" style="position: absolute; left: {{slalom.lanes[0].width+20}}px">
+		<div id="config-pylon">
 			<div>
 				<span>パイロン数</span>
 				<span><select ng-model="config.pylon.num" ng-options="num for num in config.pylon.nums" ng-init="config.pylon.num = 10"></select>個</span>
@@ -33,15 +37,16 @@
 				<span><select ng-model="config.pylon.interval" ng-options="interval for interval in config.pylon.intervals" ng-init="config.pylon.interval = 150"></select>cm</span>
 			</div>
 		</div>
-	</div>
 
-	<!-- ドラッグ用ブレード -->
-	<div id="master-blades">
-		<div name="blade">
-			<span><img footmark="left" ng-src="./resources/left_foot.png" alt="left foot"></span>
-			<span><img footmark="right" ng-src="./resources/right_foot.png" alt="right foot"></span>
+		<!-- ドラッグ用ブレード -->
+		<div id="master-blades">
+			<div name="blade">
+				<span><img master-footmark="left" ng-src="./resources/left_foot.png" alt="left foot"></span>
+				<span><img master-footmark="right" ng-src="./resources/right_foot.png" alt="right foot"></span>
+			</div>
 		</div>
 	</div>
+
 </div>
 
 </body>
